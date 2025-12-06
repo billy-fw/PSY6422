@@ -1,54 +1,109 @@
-##testing for analysis of premier league football data
-##load relevant packages
+---
+title: "Final Project"
+author: "Billy FW"
+format: html
+editor: visual
+---
+
+### Controversy around xG
+
+### Data
+
+The [raw data set](https://github.com/billy-fw/PSY6422/blob/main/raw%20data/england-premier-league-teams-2018-to-2019-stats.csv) used in this project was downloaded directly from a sample of .csv files offered on [Footystats.org](https://footystats.org/download-stats-csv).
+
+### Aims
+
+The statistic xG was introduced to football analysis a few years back, and its
+
+I wanted to analyse how accurate the measures used to assess xG are.
+
+### Data Preparation
+
+```{r}
+#| results: "hide"
+#| warning: false
+#| message: false
+
+#set working directory
+setwd("\\\\STUDATA05.shef.ac.uk/home/pc/pcp25bdf/ManW10/Desktop/PSY6422 Data Analysis and Visualisation (AUTUMN 2025~26)/PSY6422_Football")
+
+#load relevant libaries
 library(tidyverse)
 library(here)
 library(plotly)
-##load data file
+```
+
+```{r}
+#load and read raw data
 df<-read.csv(here("raw data", "england-premier-league-teams-2018-to-2019-stats.csv"))
+```
+
+```{r}
+#| results: "hide"
+#glimpse at the data
 head(df)
 str(df)
-glimpse(df)  ##show output on quarto (raw data glimpse)
-##glimpse of this dataset highlights a lot of variables that i just do not need in my dataset
-##i want to get rid of a lot of these columns to make the dataset cleaner to read
-remove_variables<-c("over", "under")
-df2<-df %>%
-  select(-starts_with(remove_variables))
-glimpse(df2)
-#####OR
-##keep only the variables i need
+glimpse(df)
+```
+
+Glimpse of this dataset highlights a lot of variables that i just do not need.
+
+```{r}
+#| results: "hide"
+#| warning: false
+#| message: false
+#select relevant variables
 xg_var<-names(df %>% select(starts_with("xg")))
 variables_to_select<-c("team_name", "wins", "draws", "losses", "goals_scored", "goals_conceded", "league_position", xg_var)
 df_select<-df %>%
   select(variables_to_select)
-##check for missing data
-sum(is.na(df_select)) ##show output on quarto
-##create row for average goal scored per match
+```
+
+And a final check to make sure there is no missing data
+
+```{r}
+sum(is.na(df_select))
+```
+
+The goals scored column is a total across the season, so I need to create a column that contains the average goals per match.
+
+```{r}
+#| results: "hide"
+#| warning: false
+#| message: false
+#create row for average goal scored per match
 df_select<-df_select %>%
   mutate(avg_goals_scored = goals_scored/38)
 glimpse(df_select)
-##round new column to 2 d.p
+#round new column to 2 d.p
 df_select<-df_select %>%
   mutate(avg_goals_scored = round(avg_goals_scored, 2))
 glimpse(df_select$avg_goals_scored)
-##rename columns for clarity
+#rename columns for clarity
 df_select<-df_select %>%
   rename(
     actual_goals = avg_goals_scored,
     expected_goals = xg_for_avg_overall
-  )
-glimpse(df_select) ##show output on quarto (final df)
+)
+```
 
+Cool, lets have a look!
 
+```{r}
+#lets have a look
+head(df_select)
+```
 
+### Interactive Scatter Plot
 
-###Analysis
+```{r}
+#| warning: false
+#| message: false
+#| echo: false 
+library(ggplot2)
+library(plotly)
 
-
-##check for correlations
-##does xg correlate to actual goals scored
-cor(df_select$expected_goals, df_select$actual_goals) ##show this output on quarto
-##create scatter plot
-# --- Team colours -------------------------------------------------------------
+#Team colours
 
 team_colors <- c(
   "Arsenal FC" = "#EF0107",
@@ -100,7 +155,7 @@ p <- ggplot(
   ) +
   scale_color_manual(values = team_colors) +
   labs(
-    title = "Expected Goals vs Actual Goals Scored",
+    title = "Expected Goals vs Actual Goals Scored (per match)",
     x = "Actual Goals Scored",
     y = "Expected Goals Scored"
   ) +
@@ -127,3 +182,9 @@ p <- p %>% layout(
     font = list(size = 14, color = "darkgreen")
   )
 )
+
+p
+
+```
+
+This scatter plot shows each premier league team and their respective average xG and actual goals scored per match in the 2018/19 season. The regression line illustrates the high correlation percieved between the two variables.
