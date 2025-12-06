@@ -1,0 +1,181 @@
+﻿Season,Team Name,Expected Goals (xG),Actual Goals (GF)
+2016/17,Tottenham Hotspur FC,2.1,2.26
+2016/17,Liverpool FC,2,2.05
+2016/17,Manchester City FC,1.98,2.11
+2016/17,Manchester United FC,1.85,1.42
+2016/17,Arsenal FC,1.81,2.03
+2016/17,Chelsea FC,1.79,2.24
+2016/17,Southampton FC,1.65,1.08
+2016/17,Everton FC,1.49,1.63
+2016/17,AFC Bournemouth,1.46,1.45
+2016/17,Watford FC,1.39,1.05
+2016/17,Stoke City FC,1.34,1.08
+2016/17,West Ham United FC,1.34,1.24
+2016/17,Crystal Palace FC,1.33,1.32
+2016/17,Leicester City FC,1.31,1.26
+2016/17,Swansea City AFC,1.27,1.18
+2016/17,Sunderland AFC,1.26,0.76
+2016/17,Burnley FC,1.21,1.03
+2016/17,Hull City AFC,1.21,0.97
+2016/17,West Bromwich Albion FC,1.18,1.13
+2016/17,Middlesbrough FC,1.11,0.71
+2017/18,Manchester City FC,1.94,2.79
+2017/18,Liverpool FC,1.75,2.21
+2017/18,Tottenham Hotspur FC,1.7,1.95
+2017/18,Arsenal FC,1.65,1.95
+2017/18,Chelsea FC,1.62,1.63
+2017/18,Manchester United FC,1.38,1.79
+2017/18,AFC Bournemouth,1.32,1.18
+2017/18,Crystal Palace FC,1.31,1.18
+2017/18,Southampton FC,1.31,0.97
+2017/18,Newcastle United FC,1.27,1.03
+2017/18,Leicester City FC,1.26,1.47
+2017/18,Watford FC,1.25,1.16
+2017/18,Stoke City FC,1.16,0.92
+2017/18,Burnley FC,1.14,0.95
+2017/18,West Ham United FC,1.12,1.26
+2017/18,West Bromwich Albion FC,1.11,0.82
+2017/18,Everton FC,1.07,1.16
+2017/18,Brighton & Hove Albion FC,1.07,0.89
+2017/18,Huddersfield Town FC,1.07,0.74
+2017/18,Swansea City AFC,1,0.74
+2018/19,Manchester City FC,1.85,2.5
+2018/19,Liverpool FC,1.59,2.34
+2018/19,Chelsea FC,1.53,1.66
+2018/19,Manchester United FC,1.45,1.71
+2018/19,Tottenham Hotspur FC,1.4,1.76
+2018/19,Leicester City FC,1.37,1.34
+2018/19,Everton FC,1.32,1.42
+2018/19,Arsenal FC,1.3,1.92
+2018/19,Crystal Palace FC,1.23,1.34
+2018/19,Wolverhampton Wanderers FC,1.23,1.24
+2018/19,Southampton FC,1.22,1.18
+2018/19,AFC Bournemouth,1.22,1.47
+2018/19,West Ham United FC,1.22,1.37
+2018/19,Watford FC,1.16,1.37
+2018/19,Fulham FC,1.15,0.89
+2018/19,Newcastle United FC,1.09,1.11
+2018/19,Cardiff City FC,1.07,0.89
+2018/19,Huddersfield Town FC,1.04,0.58
+2018/19,Burnley FC,0.99,1.18
+2018/19,Brighton & Hove Albion FC,0.99,0.92
+2019/20,Manchester City FC,2.23,2.68
+2019/20,Chelsea FC,1.86,1.82
+2019/20,Liverpool FC,1.84,2.24
+2019/20,Manchester United FC,1.66,1.74
+2019/20,Leicester City FC,1.62,1.76
+2019/20,Southampton FC,1.49,1.34
+2019/20,Brighton & Hove Albion FC,1.41,1.03
+2019/20,Wolverhampton Wanderers FC,1.41,1.34
+2019/20,Everton FC,1.39,1.16
+2019/20,Tottenham Hotspur FC,1.36,1.61
+2019/20,Aston Villa FC,1.36,1.08
+2019/20,West Ham United FC,1.33,1.29
+2019/20,Arsenal FC,1.3,1.47
+2019/20,Watford FC,1.27,0.95
+2019/20,Sheffield United FC,1.2,1.03
+2019/20,Norwich City FC,1.18,0.68
+2019/20,Crystal Palace FC,1.17,0.82
+2019/20,Burnley FC,1.16,1.13
+2019/20,AFC Bournemouth,1.16,1.05
+2019/20,Newcastle United FC,1.13,1
+2020/21,Liverpool FC,1.9,1.79
+2020/21,Manchester City FC,1.85,2.18
+2020/21,Chelsea FC,1.71,1.53
+2020/21,Manchester United FC,1.64,1.92
+2020/21,Leeds United FC,1.62,1.63
+2020/21,Aston Villa FC,1.59,1.45
+2020/21,Brighton & Hove Albion FC,1.49,1.05
+2020/21,Leicester City FC,1.46,1.79
+2020/21,Arsenal FC,1.42,1.45
+2020/21,Wolverhampton Wanderers FC,1.41,0.95
+2020/21,Tottenham Hotspur FC,1.36,1.79
+2020/21,West Ham United FC,1.35,1.63
+2020/21,Fulham FC,1.35,0.71
+2020/21,Southampton FC,1.33,1.24
+2020/21,Everton FC,1.23,1.24
+2020/21,Burnley FC,1.21,0.87
+2020/21,Newcastle United FC,1.19,1.21
+2020/21,Crystal Palace FC,1.12,1.08
+2020/21,Sheffield United FC,1.07,0.53
+2020/21,West Bromwich Albion FC,1.06,0.92
+2021/22,Manchester City FC,2.23,2.61
+2021/22,Liverpool FC,2.16,2.47
+2021/22,Chelsea FC,1.82,2
+2021/22,Arsenal FC,1.73,1.61
+2021/22,Manchester United FC,1.56,1.5
+2021/22,Tottenham Hotspur FC,1.53,1.82
+2021/22,Brighton & Hove Albion FC,1.45,1.11
+2021/22,Southampton FC,1.44,1.13
+2021/22,West Ham United FC,1.43,1.58
+2021/22,Leeds United FC,1.43,1.11
+2021/22,Aston Villa FC,1.37,1.37
+2021/22,Brentford FC,1.34,1.26
+2021/22,Leicester City FC,1.33,1.63
+2021/22,Everton FC,1.31,1.13
+2021/22,Newcastle United FC,1.3,1.16
+2021/22,Crystal Palace FC,1.28,1.32
+2021/22,Burnley FC,1.26,0.89
+2021/22,Wolverhampton Wanderers FC,1.24,1
+2021/22,Watford FC,1.19,0.89
+2021/22,Norwich City FC,1.11,0.61
+2022/23,Manchester City FC,1.83,2.47
+2022/23,Arsenal FC,1.81,2.32
+2022/23,Brighton & Hove Albion FC,1.8,1.89
+2022/23,Liverpool FC,1.76,1.97
+2022/23,Manchester United FC,1.64,1.53
+2022/23,Newcastle United FC,1.64,1.79
+2022/23,Tottenham Hotspur FC,1.49,1.84
+2022/23,Chelsea FC,1.48,1
+2022/23,West Ham United FC,1.38,1.11
+2022/23,Leeds United FC,1.36,1.26
+2022/23,Fulham FC,1.3,1.45
+2022/23,Brentford FC,1.29,1.53
+2022/23,Everton FC,1.26,0.89
+2022/23,Aston Villa FC,1.25,1.34
+2022/23,Crystal Palace FC,1.22,1.05
+2022/23,Leicester City FC,1.21,1.34
+2022/23,Southampton FC,1.2,0.95
+2022/23,Wolverhampton Wanderers FC,1.19,0.82
+2022/23,AFC Bournemouth,1.05,0.97
+2022/23,Nottingham Forest FC,1.05,1
+2023/24,Liverpool FC,1.95,2.26
+2023/24,Manchester City FC,1.9,2.53
+2023/24,Arsenal FC,1.69,2.39
+2023/24,Tottenham Hotspur FC,1.6,1.95
+2023/24,Chelsea FC,1.47,2.03
+2023/24,Brighton & Hove Albion FC,1.46,1.45
+2023/24,Newcastle United FC,1.44,2.24
+2023/24,Manchester United FC,1.38,1.5
+2023/24,AFC Bournemouth,1.37,1.42
+2023/24,Aston Villa FC,1.33,2
+2023/24,Everton FC,1.3,1.05
+2023/24,Fulham FC,1.3,1.45
+2023/24,Brentford FC,1.26,1.47
+2023/24,Crystal Palace FC,1.19,1.5
+2023/24,West Ham United FC,1.17,1.58
+2023/24,Burnley FC,1.15,1.08
+2023/24,Nottingham Forest FC,1.15,1.29
+2023/24,Wolverhampton Wanderers FC,1.14,1.32
+2023/24,Luton Town FC,1.11,1.37
+2023/24,Sheffield United FC,0.95,0.92
+2024/25,Liverpool FC,1.79,2.26
+2024/25,Manchester City FC,1.75,1.89
+2024/25,Chelsea FC,1.64,1.68
+2024/25,Arsenal FC,1.6,1.82
+2024/25,AFC Bournemouth,1.57,1.53
+2024/25,Brighton & Hove Albion FC,1.45,1.74
+2024/25,Manchester United FC,1.43,1.16
+2024/25,Newcastle United FC,1.43,1.79
+2024/25,Fulham FC,1.43,1.42
+2024/25,Tottenham Hotspur FC,1.42,1.68
+2024/25,Brentford FC,1.35,1.74
+2024/25,Crystal Palace FC,1.33,1.34
+2024/25,Aston Villa FC,1.32,1.53
+2024/25,Nottingham Forest FC,1.28,1.53
+2024/25,West Ham United FC,1.2,1.21
+2024/25,Wolverhampton Wanderers FC,1.2,1.42
+2024/25,Everton FC,1.16,1.11
+2024/25,Ipswich Town FC,1.01,0.95
+2024/25,Leicester City FC,0.98,0.87
+2024/25,Southampton FC,0.97,0.68
