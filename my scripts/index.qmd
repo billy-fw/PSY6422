@@ -1,190 +1,172 @@
 ---
-title: "Final Project"
-author: "Billy FW"
+title: "Footystats data"
+author: "bfw"
 format: html
 editor: visual
 ---
 
-### Controversy around xG
-
-### Data
-
-The [raw data set](https://github.com/billy-fw/PSY6422/blob/main/raw%20data/england-premier-league-teams-2018-to-2019-stats.csv) used in this project was downloaded directly from a sample of .csv files offered on [Footystats.org](https://footystats.org/download-stats-csv).
-
-### Aims
-
-The statistic xG was introduced to football analysis a few years back, and its
-
-I wanted to analyse how accurate the measures used to assess xG are.
-
-### Data Preparation
+Load relevant packages and upload data:
 
 ```{r}
 #| results: "hide"
 #| warning: false
 #| message: false
-
-#set working directory
-setwd("\\\\STUDATA05.shef.ac.uk/home/pc/pcp25bdf/ManW10/Desktop/PSY6422 Data Analysis and Visualisation (AUTUMN 2025~26)/PSY6422_Football")
-
-#load relevant libaries
-library(tidyverse)
+#| echo: false
+#load relevant packages
 library(here)
-library(plotly)
+library(tidyverse)
+#upload raw data
+data_m<-read.csv(here("raw data", "my_premier_league_data.csv"))
 ```
 
-```{r}
-#load and read raw data
-df<-read.csv(here("raw data", "england-premier-league-teams-2018-to-2019-stats.csv"))
-```
+### Data Origins
 
-```{r}
-#| results: "hide"
-#glimpse at the data
-head(df)
-str(df)
-glimpse(df)
-```
+The data used for this project was collected from footystats.org between 01/12/25 and 05/12/25. Part of the data was downloaded directly from a sample of .csv files offered on the website. However, the rest of the data is behind a pay wall and therefore had to be scraped. The scraped data includes variables:
 
-Glimpse of this dataset highlights a lot of variables that i just do not need.
+-   Season - the football year/season concerned, ranging from 2016/17 (the introduction of xG) to 2024/25,
 
-```{r}
-#| results: "hide"
-#| warning: false
-#| message: false
-#select relevant variables
-xg_var<-names(df %>% select(starts_with("xg")))
-variables_to_select<-c("team_name", "wins", "draws", "losses", "goals_scored", "goals_conceded", "league_position", xg_var)
-df_select<-df %>%
-  select(variables_to_select)
-```
+-   Club - the name of each 20 teams that was in the premier league that season,
 
-And a final check to make sure there is no missing data
+-   Expected Goals (xG) - the avergage xG of each team per match across the season,
 
-```{r}
-sum(is.na(df_select))
-```
+-   Actual Goals - the average actual goals scored of each team per match across the season.
 
-The goals scored column is a total across the season, so I need to create a column that contains the average goals per match.
+The scarped data was used to create a csv file in excel to produce my raw data set.
 
-```{r}
-#| results: "hide"
-#| warning: false
-#| message: false
-#create row for average goal scored per match
-df_select<-df_select %>%
-  mutate(avg_goals_scored = goals_scored/38)
-glimpse(df_select)
-#round new column to 2 d.p
-df_select<-df_select %>%
-  mutate(avg_goals_scored = round(avg_goals_scored, 2))
-glimpse(df_select$avg_goals_scored)
-#rename columns for clarity
-df_select<-df_select %>%
-  rename(
-    actual_goals = avg_goals_scored,
-    expected_goals = xg_for_avg_overall
-)
-```
-
-Cool, lets have a look!
-
-```{r}
-#lets have a look
-head(df_select)
-```
-
-### Interactive Scatter Plot
+Here is an example of the data:
 
 ```{r}
 #| warning: false
 #| message: false
 #| echo: false 
-library(ggplot2)
-library(plotly)
-
-#Team colours
-
-team_colors <- c(
-  "Arsenal FC" = "#EF0107",
-  "Tottenham Hotspur FC" = "#132257",
-  "Manchester City FC" = "#6CABDD",
-  "Leicester City FC" = "#0053A0",
-  "Crystal Palace FC" = "#1B458F",
-  "Everton FC" = "#003399",
-  "Burnley FC" = "#6C1D45",
-  "Southampton FC" = "#D71920",
-  "AFC Bournemouth" = "#DA291C",
-  "Manchester United FC" = "#DA291C",
-  "Liverpool FC" = "#C8102E",
-  "Chelsea FC" = "#034694",
-  "West Ham United FC" = "#7A263A",
-  "Watford FC" = "#FBEE23",
-  "Newcastle United FC" = "#241F20",
-  "Cardiff City FC" = "#1E63B1",
-  "Fulham FC" = "#FFFFFF",
-  "Brighton & Hove Albion FC" = "#0057B8",
-  "Huddersfield Town FC" = "#0E63AD",
-  "Wolverhampton Wanderers FC" = "#FDB913"
-)
-
-# --- Base ggplot --------------------------------------------------------------
-
-p <- ggplot(
-  df_select,
-  aes(
-    x = actual_goals,
-    y = expected_goals,
-    color = as.factor(team_name),
-    text = paste(
-      "Team:", team_name, "<br>",
-      "League Position:", league_position, "<br>",
-      "Expected Goals:", expected_goals, "<br>",
-      "Actual Goals:", actual_goals
-    )
-  )
-) +
-  geom_point() +
-  geom_smooth(
-    aes(group = 1),
-    method = "lm",
-    se = FALSE,
-    color = "darkgreen",
-    linetype = "dashed",
-    linewidth = 0.5
-  ) +
-  scale_color_manual(values = team_colors) +
-  labs(
-    title = "Expected Goals vs Actual Goals Scored (per match)",
-    x = "Actual Goals Scored",
-    y = "Expected Goals Scored"
-  ) +
-  theme_minimal()
-
-# --- Convert to Plotly --------------------------------------------------------
-
-p <- ggplotly(p, tooltip = "text") %>%
-  layout(showlegend = FALSE)
-
-# --- Add correlation label ----------------------------------------------------
-
-corr_value <- cor(df_select$actual_goals, df_select$expected_goals)
-corr_label <- paste0("r = ", round(corr_value, 3))
-
-p <- p %>% layout(
-  annotations = list(
-    x = 0.05,
-    y = 0.95,
-    xref = "paper",
-    yref = "paper",
-    text = corr_label,
-    showarrow = FALSE,
-    font = list(size = 14, color = "darkgreen")
-  )
-)
-
-p
-
+head(data_m)
 ```
 
-This scatter plot shows each premier league team and their respective average xG and actual goals scored per match in the 2018/19 season. The regression line illustrates the high correlation percieved between the two variables.
+### Research Questions
+
+The overall aim of this project is to test the accuracy of the statistic xG, and whether this xG has become more accurate over time. To understand this, this project aims to test whether:
+
+1.  There is a strong, significant relationship between xG and actual goals scored
+2.  The relationship between xG and actual goals scored becomes stronger over time
+
+### Data Preparation
+
+Given that I created this raw data using scraped data, there was not much data preparation needed.
+
+### Data Analysis
+
+#### Overarching Trend
+
+First, I wanted to check whether there was an overall correlation between variables expected goals and actual goals.
+
+```{r}
+#| warning: false
+#| message: false
+#test correlation
+ovr_cor<-cor(data_m$Expected_goals, data_m$Actual_goals)
+#round to 3 d.p
+ovr_cor_rounded<-round(ovr_cor, 3)
+#print result
+paste("r=", ovr_cor_rounded)
+```
+
+Pearson's correlation coefficient (r) indicates a strong relationship between xG and actual goals.
+
+We can visualize this relationship via a scatter plot:
+
+```{r}
+#| warning: false
+#| message: false
+# Create scatter plot of xG and actual goals across all seasons
+plot_1<-ggplot(data = data_m, 
+               aes(x = Expected_goals,
+                   y = Actual_goals)) +
+  geom_point(size = 0.9, #add scatter function
+             color = "skyblue",
+             alpha = 0.7) +
+  geom_smooth(method = "lm", #add regression line
+              se = FALSE,
+              color = "red") +
+  labs(title = "Overall Relationship Between Expected Goals (xG) and Actual Goals Scored ", #add labels
+       x = "Expected Goals (xG)",
+       y = "Actual Goals"
+  ) +
+    annotate( #add correlation coefficent
+    "text",
+    x = max(data_m$Expected_goals) * 0.9, #place text 90% of the length along the x-axis
+    y = max(data_m$Actual_goals) * 0.7, #70% across the y axis
+    label = paste("r =", ovr_cor_rounded),
+    size = 4,
+    color = "red"
+  ) +
+  theme_minimal()
+plot_1 
+```
+
+This visualization highlights a strong relationship between xG and actual goals scored, therefore answering the first research question.
+
+#### Trends per Season
+
+Next I wanted to check whether the strength of this relationship has changed since the introduction of xG.
+
+Here is a correlation matrix of xG and actual goals, per season:
+
+```{r}
+#| warning: false
+#| message: false
+library(kableExtra)
+#check correlations per season and compare to mean
+cor_by_season <- data_m %>%
+  group_by(Season) %>%
+  summarise(r = round(cor(Expected_goals, Actual_goals, method = "pearson"), 3))
+cor_by_season_col <- data_m %>% #add color to specific values
+  group_by(Season) %>%
+  summarise(r = round(cor(Expected_goals, Actual_goals, method = "pearson"), 3)) %>%
+  mutate(r = cell_spec(
+    r,
+    color = ifelse(r < ovr_cor, "red", "green")
+  ))
+cor_by_season_col %>%
+  kable(escape = FALSE, align = "c", caption = "Correlation by Season")
+```
+
+This table shows that only season 2020/21 falls below the mean (0.742\<0.825) as is highlighted in red. Whereas each other season remained above the mean and is somewhat consistent in value. This is reinforced through the accompanying line chart, highlighting the consistency in values. Other than season 2020/21, which acts as an outlier:
+
+```{r}
+#| warning: false
+#| message: false
+#| results: false
+cor_by_season_out <- cor_by_season %>%
+  mutate(is_outlier_season = ifelse(Season == "2020/21", TRUE, FALSE))
+line_plot <- ggplot(cor_by_season_out, aes(x = Season, y = r, group = 1)) +
+  geom_line(color = "green", size = 1) +
+  geom_point(aes(color = is_outlier_season), size = 3) +
+  scale_color_manual(values = c("FALSE" = "green", "TRUE" = "red")) +
+  labs(
+    title = "Strength of xG vs Actual Goals Correlation Over Seasons",
+    x = "Season",
+    y = "Pearson Correlation",
+    color = "Outlier"
+  ) +
+  theme_minimal() +
+  expand_limits(y = 0.5)
+
+# Boxplot
+box_plot <- ggplot(cor_by_season_out, aes(y = r)) +
+  geom_boxplot(fill = "green", outlier.color = "red", outlier.size = 3) +
+  geom_point(data = filter(cor_by_season_out, is_outlier_season), 
+             aes(x = 1, y = r), color = "red", size = 3) +
+  labs(
+    title = "Boxplot",
+  ) +
+  theme_minimal() +
+  expand_limits(y = 0.5)
+```
+
+```{r}
+#| warning: false
+#| message: false
+library(patchwork)
+# Combine side by side
+line_plot + box_plot + plot_layout(ncol = 2, widths = c(2, 1))
+```
