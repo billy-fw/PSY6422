@@ -1,4 +1,11 @@
-# PSY6422
-My project for psy6422, analysing Premier League Football statistics
+Hello there, welcome to my psy6422 project. I hope you like football :)
 
-Hello, welcome to my psy6422 project.
+# Expected Goals in Football
+
+This repository contains a Quarto project analysing the relationship between expected goals (xG)
+and actual goals scored in the Premier League.
+
+## How to reproduce
+1. Open the `.qmd` file in RStudio
+2. Install required packages listed in the script
+3. Render to HTML
