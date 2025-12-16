@@ -252,6 +252,6 @@ If I had data available, in future work I would:
 
 -   Extend the analysis to other leagues
 
--   Examine match-level rather than season-level data (player level, even)
+-   Examine match-level rather than season-level data (player-level, even)
 
 -   Investigate how xG relates to points, wins, or league position.

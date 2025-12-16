@@ -6,9 +6,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="author" content="Billy FW">
+<meta name="author" content="bfw">
 
-<title>Final Project</title>
+<title>Testing the Strength of the Statistic Expected Goals in Football</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -67,38 +67,45 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="index_files/libs/quarto-html/quarto-syntax-highlighting-2f5df379a58b258e96c21c0638c20c03.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="index_files/libs/bootstrap/bootstrap.min.js"></script>
 <link href="index_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="index_files/libs/bootstrap/bootstrap-1bc8a17f135ab3d594c857e9f48e611b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
-<link href="index_files/libs/htmltools-fill-0.5.8.1/fill.css" rel="stylesheet">
-
-<script src="index_files/libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
-
-<script src="index_files/libs/plotly-binding-4.11.0/plotly.js"></script>
-
-<script src="index_files/libs/typedarray-0.1/typedarray.min.js"></script>
-
-<script src="index_files/libs/jquery-3.5.1/jquery.min.js"></script>
-
-<link href="index_files/libs/crosstalk-1.2.2/css/crosstalk.min.css" rel="stylesheet">
-
-<script src="index_files/libs/crosstalk-1.2.2/js/crosstalk.min.js"></script>
-
-<link href="index_files/libs/plotly-htmlwidgets-css-2.11.1/plotly-htmlwidgets.css" rel="stylesheet">
-
-<script src="index_files/libs/plotly-main-2.11.1/plotly-latest.min.js"></script>
+<link href="index_files/libs/bootstrap/bootstrap-757986064096d87d96890fae452bb36e.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 
 
-
+<link rel="stylesheet" href="my_theme.css">
 </head>
 
-<body class="fullcontent">
+<body>
 
 <div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
-
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#project-motivations" id="toc-project-motivations" class="nav-link active" data-scroll-target="#project-motivations">Project Motivations</a></li>
+  <li><a href="#data-origins" id="toc-data-origins" class="nav-link" data-scroll-target="#data-origins">Data Origins</a></li>
+  <li><a href="#research-questions" id="toc-research-questions" class="nav-link" data-scroll-target="#research-questions">Research Questions</a></li>
+  <li><a href="#data-preparation" id="toc-data-preparation" class="nav-link" data-scroll-target="#data-preparation">Data Preparation</a></li>
+  <li><a href="#visualizations" id="toc-visualizations" class="nav-link" data-scroll-target="#visualizations">Visualizations</a>
+  <ul class="collapse">
+  <li><a href="#overarching-trend" id="toc-overarching-trend" class="nav-link" data-scroll-target="#overarching-trend">Overarching Trend</a></li>
+  <li><a href="#per-season-trends" id="toc-per-season-trends" class="nav-link" data-scroll-target="#per-season-trends">Per Season Trends</a></li>
+  </ul></li>
+  <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary">Summary</a>
+  <ul class="collapse">
+  <li><a href="#key-findings" id="toc-key-findings" class="nav-link" data-scroll-target="#key-findings">Key Findings</a></li>
+  </ul></li>
+  <li><a href="#limitations" id="toc-limitations" class="nav-link" data-scroll-target="#limitations">Limitations</a>
+  <ul class="collapse">
+  <li><a href="#future-work" id="toc-future-work" class="nav-link" data-scroll-target="#future-work">Future Work</a></li>
+  </ul></li>
+  </ul>
+</nav>
+</div>
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Final Project</h1>
+<h1 class="title">Testing the Strength of the Statistic Expected Goals in Football</h1>
 </div>
 
 
@@ -108,7 +115,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Author</div>
     <div class="quarto-title-meta-contents">
-             <p>Billy FW </p>
+             <p>bfw </p>
           </div>
   </div>
     
@@ -121,130 +128,262 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<section id="controversy-around-xg" class="level3">
-<h3 class="anchored" data-anchor-id="controversy-around-xg">Controversy around xG</h3>
+<p>Load relevant packages and upload data:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#load relevant packages</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(here)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co">#upload raw data</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>data_m<span class="ot">&lt;-</span><span class="fu">read.csv</span>(<span class="fu">here</span>(<span class="st">"raw data"</span>, <span class="st">"my_premier_league_data.csv"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="project-motivations" class="level2">
+<h2 class="anchored" data-anchor-id="project-motivations">Project Motivations</h2>
+<p>There has been controversy surrounding the statistic “expected goals (xG)” since it was introduced in premier league football match analysis in 2016/17. For instance, pundits and general audiences were uncertain about how the statistic is calculated, and what variables are taking into account. Furthermore, it challenges peoples feelings about the outcome of a match, perhaps viewed as objectifying a subjective experience by adding numbers to things that do not illustrate the full story.</p>
 </section>
-<section id="data" class="level3">
-<h3 class="anchored" data-anchor-id="data">Data</h3>
-<p>The <a href="https://github.com/billy-fw/PSY6422/blob/main/raw%20data/england-premier-league-teams-2018-to-2019-stats.csv">raw data set</a> used in this project was downloaded directly from a sample of .csv files offered on <a href="https://footystats.org/download-stats-csv">Footystats.org</a>.</p>
-</section>
-<section id="aims" class="level3">
-<h3 class="anchored" data-anchor-id="aims">Aims</h3>
-<p>The statistic xG was introduced to football analysis a few years back, and its</p>
-<p>I wanted to analyse how accurate the measures used to assess xG are.</p>
-</section>
-<section id="data-preparation" class="level3">
-<h3 class="anchored" data-anchor-id="data-preparation">Data Preparation</h3>
+<section id="data-origins" class="level2">
+<h2 class="anchored" data-anchor-id="data-origins">Data Origins</h2>
+<p>The data used for this project was collected from <a href="https://footystats.org/england/premier-league/xg#">footystats.org</a> between 01/12/25 and 05/12/25. Part of the <a href="https://github.com/billy-fw/PSY6422/blob/main/raw%20data/england-premier-league-teams-2018-to-2019-stats.csv">raw data</a> can be downloaded directly from a sample of <a href="https://footystats.org/download-stats-csv">.csv files</a> offered on the website. However, the csv files containing the rest of the data nesccasary for this project is behind a pay wall. Therefore the data used here was scraped from the website. I created the file “<a href="https://github.com/billy-fw/PSY6422/blob/main/raw%20data/my_premier_league_data.csv">my_premier_league_data.csv</a>” on excel that contains the scraped data.</p>
+<p>The data includes variables:</p>
+<ul>
+<li><p>Season - the football year/season concerned, ranging from 2016/17 (the introduction of xG) to 2024/25,</p></li>
+<li><p>Team_name - the name of each of the 20 clubs that was in the premier league that respective season,</p></li>
+<li><p>Expected_goals - the average expected goals (xG) of each team per match across the season,</p></li>
+<li><p>Actual_goals - the average actual goals scored of each team per match across the season.</p></li>
+</ul>
+<p>Here is an example of the data:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#set working directory</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">setwd</span>(<span class="st">"</span><span class="sc">\\\\</span><span class="st">STUDATA05.shef.ac.uk/home/pc/pcp25bdf/ManW10/Desktop/PSY6422 Data Analysis and Visualisation (AUTUMN 2025~26)/PSY6422_Football"</span>)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co">#load relevant libaries</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(here)</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(plotly)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">#load and read raw data</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>df<span class="ot">&lt;-</span><span class="fu">read.csv</span>(<span class="fu">here</span>(<span class="st">"raw data"</span>, <span class="st">"england-premier-league-teams-2018-to-2019-stats.csv"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">#glimpse at the data</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(df)</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(df)</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p>Glimpse of this dataset highlights a lot of variables that i just do not need.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">#select relevant variables</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>xg_var<span class="ot">&lt;-</span><span class="fu">names</span>(df <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="fu">starts_with</span>(<span class="st">"xg"</span>)))</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>variables_to_select<span class="ot">&lt;-</span><span class="fu">c</span>(<span class="st">"team_name"</span>, <span class="st">"wins"</span>, <span class="st">"draws"</span>, <span class="st">"losses"</span>, <span class="st">"goals_scored"</span>, <span class="st">"goals_conceded"</span>, <span class="st">"league_position"</span>, xg_var)</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>df_select<span class="ot">&lt;-</span>df <span class="sc">%&gt;%</span></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(variables_to_select)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p>And a final check to make sure there is no missing data</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(<span class="fu">is.na</span>(df_select))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0</code></pre>
-</div>
-</div>
-<p>The goals scored column is a total across the season, so I need to create a column that contains the average goals per match.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co">#create row for average goal scored per match</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>df_select<span class="ot">&lt;-</span>df_select <span class="sc">%&gt;%</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">avg_goals_scored =</span> goals_scored<span class="sc">/</span><span class="dv">38</span>)</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(df_select)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Rows: 20
-Columns: 14
-$ team_name              &lt;chr&gt; "Arsenal FC", "Tottenham Hotspur FC", "Manchest…
-$ wins                   &lt;int&gt; 21, 23, 32, 15, 14, 15, 11, 9, 13, 19, 30, 21, …
-$ draws                  &lt;int&gt; 7, 2, 2, 7, 7, 9, 7, 12, 6, 9, 7, 9, 7, 8, 9, 4…
-$ losses                 &lt;int&gt; 10, 13, 4, 16, 17, 14, 20, 17, 19, 10, 1, 8, 16…
-$ goals_scored           &lt;int&gt; 73, 67, 95, 51, 51, 54, 45, 45, 56, 65, 89, 63,…
-$ goals_conceded         &lt;int&gt; 51, 39, 23, 48, 53, 46, 68, 65, 70, 54, 22, 39,…
-$ league_position        &lt;int&gt; 5, 4, 1, 9, 12, 8, 15, 16, 14, 6, 2, 3, 10, 11,…
-$ xg_for_avg_overall     &lt;dbl&gt; 1.43, 1.58, 2.18, 1.56, 1.36, 1.45, 0.90, 1.35,…
-$ xg_for_avg_home        &lt;dbl&gt; 1.60, 1.74, 2.45, 1.70, 1.51, 1.55, 1.01, 1.44,…
-$ xg_for_avg_away        &lt;dbl&gt; 1.25, 1.42, 1.90, 1.40, 1.20, 1.35, 0.78, 1.26,…
-$ xg_against_avg_overall &lt;dbl&gt; 1.44, 1.35, 0.79, 1.32, 1.53, 1.25, 1.67, 1.47,…
-$ xg_against_avg_home    &lt;dbl&gt; 1.29, 1.28, 0.75, 1.19, 1.31, 1.19, 1.46, 1.36,…
-$ xg_against_avg_away    &lt;dbl&gt; 1.60, 1.42, 0.83, 1.45, 1.75, 1.31, 1.89, 1.58,…
-$ avg_goals_scored       &lt;dbl&gt; 1.9210526, 1.7631579, 2.5000000, 1.3421053, 1.3…</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co">#round new column to 2 d.p</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>df_select<span class="ot">&lt;-</span>df_select <span class="sc">%&gt;%</span></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">avg_goals_scored =</span> <span class="fu">round</span>(avg_goals_scored, <span class="dv">2</span>))</span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(df_select<span class="sc">$</span>avg_goals_scored)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code> num [1:20] 1.92 1.76 2.5 1.34 1.34 1.42 1.18 1.18 1.47 1.71 ...</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co">#rename columns for clarity</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>df_select<span class="ot">&lt;-</span>df_select <span class="sc">%&gt;%</span></span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(</span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">actual_goals =</span> avg_goals_scored,</span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">expected_goals =</span> xg_for_avg_overall</span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p>Cool, lets have a look!</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co">#lets have a look</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(df_select)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>             team_name wins draws losses goals_scored goals_conceded
-1           Arsenal FC   21     7     10           73             51
-2 Tottenham Hotspur FC   23     2     13           67             39
-3   Manchester City FC   32     2      4           95             23
-4    Leicester City FC   15     7     16           51             48
-5    Crystal Palace FC   14     7     17           51             53
-6           Everton FC   15     9     14           54             46
-  league_position expected_goals xg_for_avg_home xg_for_avg_away
-1               5           1.43            1.60            1.25
-2               4           1.58            1.74            1.42
-3               1           2.18            2.45            1.90
-4               9           1.56            1.70            1.40
-5              12           1.36            1.51            1.20
-6               8           1.45            1.55            1.35
-  xg_against_avg_overall xg_against_avg_home xg_against_avg_away actual_goals
-1                   1.44                1.29                1.60         1.92
-2                   1.35                1.28                1.42         1.76
-3                   0.79                0.75                0.83         2.50
-4                   1.32                1.19                1.45         1.34
-5                   1.53                1.31                1.75         1.34
-6                   1.25                1.19                1.31         1.42</code></pre>
+<pre><code>   Season            Team_name Expected_goals Actual_goals
+1 2016/17 Tottenham Hotspur FC           2.10         2.26
+2 2016/17         Liverpool FC           2.00         2.05
+3 2016/17   Manchester City FC           1.98         2.11
+4 2016/17 Manchester United FC           1.85         1.42
+5 2016/17           Arsenal FC           1.81         2.03
+6 2016/17           Chelsea FC           1.79         2.24</code></pre>
 </div>
 </div>
 </section>
-<section id="interactive-scatter-plot" class="level3">
-<h3 class="anchored" data-anchor-id="interactive-scatter-plot">Interactive Scatter Plot</h3>
+<section id="research-questions" class="level2">
+<h2 class="anchored" data-anchor-id="research-questions">Research Questions</h2>
+<p>This project aims to evaluate the usefulness and reliability of the expected goals (xG) statistic in football analysis. Specifically, it seeks to answer the following questions:</p>
+<ul>
+<li><p>Is there a strong and statistically significant relationship between expected goals (xG) and actual goals scored?</p></li>
+<li><p>Has the strength of the relationship between xG and actual goals changed over time since the introduction of xG in the Premier League?</p></li>
+</ul>
+</section>
+<section id="data-preparation" class="level2">
+<h2 class="anchored" data-anchor-id="data-preparation">Data Preparation</h2>
+<p>The raw data set was created manually to be analysis-ready, therefore no major data wrangling (e.g.&nbsp;handling missing values or recoding variables) was required.</p>
+<p>However, several preparation and validation steps were undertaken:</p>
+<ul>
+<li>Sanity checks were performed to ensure expected goals and actual goals values were within plausible ranges for Premier League football.</li>
+<li>Summary statistics were computed to confirm consistency across seasons.</li>
+<li>The data were grouped by season to calculate Pearson correlation coefficients between expected goals and actual goals for each season.</li>
+</ul>
+<p>The raw data were then used directly to generate summary tables and visualisations.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>cor_by_season <span class="ot">&lt;-</span> data_m <span class="sc">%&gt;%</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Season) <span class="sc">%&gt;%</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">r =</span> <span class="fu">round</span>(<span class="fu">cor</span>(Expected_goals, Actual_goals, <span class="at">method =</span> <span class="st">"pearson"</span>), <span class="dv">3</span>))</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(cor_by_season)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 2
+  Season      r
+  &lt;chr&gt;   &lt;dbl&gt;
+1 2016/17 0.876
+2 2017/18 0.93 
+3 2018/19 0.891
+4 2019/20 0.923
+5 2020/21 0.742
+6 2021/22 0.923</code></pre>
+</div>
+</div>
+</section>
+<section id="visualizations" class="level2">
+<h2 class="anchored" data-anchor-id="visualizations">Visualizations</h2>
+<p>The following visualisations were created to explore the relationship between expected goals and actual goals, both overall and across individual seasons.</p>
+<section id="overarching-trend" class="level3">
+<h3 class="anchored" data-anchor-id="overarching-trend">Overarching Trend</h3>
+<p>First, I wanted to check whether there was an overall correlation between variables expected goals and actual goals.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co">#test correlation</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>ovr_cor<span class="ot">&lt;-</span><span class="fu">cor</span>(data_m<span class="sc">$</span>Expected_goals, data_m<span class="sc">$</span>Actual_goals)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co">#round to 3 d.p</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>ovr_cor_rounded<span class="ot">&lt;-</span><span class="fu">round</span>(ovr_cor, <span class="dv">3</span>)</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co">#print result</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="fu">paste</span>(<span class="st">"r="</span>, ovr_cor_rounded)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "r= 0.825"</code></pre>
+</div>
+</div>
+<p>Pearson’s correlation coefficient (r) indicates a strong relationship between xG and actual goals.</p>
+<p>We can visualize this relationship via a scatter plot:</p>
+<section id="scatter-plot" class="level4">
+<h4 class="anchored" data-anchor-id="scatter-plot">Scatter Plot</h4>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create scatter plot of xG and actual goals across all seasons</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>plot_1<span class="ot">&lt;-</span><span class="fu">ggplot</span>(<span class="at">data =</span> data_m, </span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>               <span class="fu">aes</span>(<span class="at">x =</span> Expected_goals,</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>                   <span class="at">y =</span> Actual_goals)) <span class="sc">+</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="fl">0.9</span>, <span class="co">#add scatter function</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>             <span class="at">color =</span> <span class="st">"skyblue"</span>,</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>             <span class="at">alpha =</span> <span class="fl">0.7</span>) <span class="sc">+</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="co">#add regression line</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>              <span class="at">se =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>              <span class="at">color =</span> <span class="st">"red"</span>) <span class="sc">+</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Overall Relationship Between Expected Goals (xG) and Actual Goals Scored "</span>, <span class="co">#add labels</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Expected Goals (xG)"</span>,</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Actual Goals"</span></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>    <span class="fu">annotate</span>( <span class="co">#add correlation coefficent</span></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>    <span class="st">"text"</span>,</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="fu">max</span>(data_m<span class="sc">$</span>Expected_goals) <span class="sc">*</span> <span class="fl">0.9</span>, <span class="co">#place text 90% of the length along the x-axis</span></span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="fu">max</span>(data_m<span class="sc">$</span>Actual_goals) <span class="sc">*</span> <span class="fl">0.7</span>, <span class="co">#70% across the y axis</span></span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">label =</span> <span class="fu">paste</span>(<span class="st">"r ="</span>, ovr_cor_rounded),</span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">size =</span> <span class="dv">4</span>,</span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"red"</span></span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>plot_1 </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>This visualization highlights a strong relationship between xG and actual goals scored, therefore answering the first research question.</p>
+</section>
+</section>
+<section id="per-season-trends" class="level3">
+<h3 class="anchored" data-anchor-id="per-season-trends">Per Season Trends</h3>
+<p>Next I wanted to check whether the strength of this relationship has changed since the introduction of xG.</p>
+<p>Here is a correlation matrix of xG and actual goals, per season:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(kableExtra)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co">#check correlations per season and compare to mean</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>cor_by_season <span class="ot">&lt;-</span> data_m <span class="sc">%&gt;%</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Season) <span class="sc">%&gt;%</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">r =</span> <span class="fu">round</span>(<span class="fu">cor</span>(Expected_goals, Actual_goals, <span class="at">method =</span> <span class="st">"pearson"</span>), <span class="dv">3</span>))</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>cor_by_season_col <span class="ot">&lt;-</span> data_m <span class="sc">%&gt;%</span> <span class="co">#add color to specific values</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Season) <span class="sc">%&gt;%</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">r =</span> <span class="fu">round</span>(<span class="fu">cor</span>(Expected_goals, Actual_goals, <span class="at">method =</span> <span class="st">"pearson"</span>), <span class="dv">3</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">r =</span> <span class="fu">cell_spec</span>(</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>    r,</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="fu">ifelse</span>(r <span class="sc">&lt;</span> ovr_cor, <span class="st">"red"</span>, <span class="st">"green"</span>)</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>  ))</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>cor_by_season_col <span class="sc">%&gt;%</span></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>(<span class="at">escape =</span> <span class="cn">FALSE</span>, <span class="at">align =</span> <span class="st">"c"</span>, <span class="at">caption =</span> <span class="st">"Correlation by Season"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<caption>Correlation by Season</caption>
+<thead>
+<tr class="header">
+<th style="text-align: center;">Season</th>
+<th style="text-align: center;">r</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">2016/17</td>
+<td style="text-align: center;"><span style="     color: green !important;">0.876</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">2017/18</td>
+<td style="text-align: center;"><span style="     color: green !important;">0.93</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">2018/19</td>
+<td style="text-align: center;"><span style="     color: green !important;">0.891</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">2019/20</td>
+<td style="text-align: center;"><span style="     color: green !important;">0.923</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">2020/21</td>
+<td style="text-align: center;"><span style="     color: red !important;">0.742</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">2021/22</td>
+<td style="text-align: center;"><span style="     color: green !important;">0.923</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">2022/23</td>
+<td style="text-align: center;"><span style="     color: green !important;">0.859</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">2023/24</td>
+<td style="text-align: center;"><span style="     color: green !important;">0.844</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">2024/25</td>
+<td style="text-align: center;"><span style="     color: green !important;">0.879</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>This table shows that only season 2020/21 falls below the mean (0.742&lt;0.825) as is highlighted in red. Whereas each other season remained above the mean and is somewhat consistent in value. This is reinforced through the accompanying line chart, highlighting the consistency in values. Other than season 2020/21, which acts as an outlier:</p>
+<section id="line-chart-left-and-box-plot-right" class="level4">
+<h4 class="anchored" data-anchor-id="line-chart-left-and-box-plot-right">Line Chart (left) and Box Plot (right)</h4>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co">#| warning: false</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="co">#| message: false</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(patchwork)</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Combine side by side</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>line_plot <span class="sc">+</span> box_plot <span class="sc">+</span> <span class="fu">plot_layout</span>(<span class="at">ncol =</span> <span class="dv">2</span>, <span class="at">widths =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="multiple-regression" class="level4">
+<h4 class="anchored" data-anchor-id="multiple-regression">Multiple Regression</h4>
+<p>Finally, I ran a multiple regression chart to further illustrate the consistency of xG since its introduction.</p>
 <div class="cell">
 <div class="cell-output-display">
-<div class="plotly html-widget html-fill-item" id="htmlwidget-5aa307f9bf51cc615cea" style="width:100%;height:464px;"></div>
-<script type="application/json" data-for="htmlwidget-5aa307f9bf51cc615cea">{"x":{"data":[{"x":[1.47],"y":[1.3500000000000001],"text":"Team: AFC Bournemouth <br> League Position: 14 <br> Expected Goals: 1.35 <br> Actual Goals: 1.47","type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(218,41,28,1)","opacity":1,"size":5.6692913385826778,"symbol":"circle","line":{"width":1.8897637795275593,"color":"rgba(218,41,28,1)"}},"hoveron":"points","name":"AFC Bournemouth","legendgroup":"AFC Bournemouth","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[1.9199999999999999],"y":[1.4299999999999999],"text":"Team: Arsenal FC <br> League Position: 5 <br> Expected Goals: 1.43 <br> Actual Goals: 1.92","type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(239,1,7,1)","opacity":1,"size":5.6692913385826778,"symbol":"circle","line":{"width":1.8897637795275593,"color":"rgba(239,1,7,1)"}},"hoveron":"points","name":"Arsenal FC","legendgroup":"Arsenal FC","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[0.92000000000000004],"y":[0.90000000000000002],"text":"Team: Brighton & Hove Albion FC <br> League Position: 17 <br> Expected Goals: 0.9 <br> Actual Goals: 0.92","type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(0,87,184,1)","opacity":1,"size":5.6692913385826778,"symbol":"circle","line":{"width":1.8897637795275593,"color":"rgba(0,87,184,1)"}},"hoveron":"points","name":"Brighton & Hove Albion FC","legendgroup":"Brighton & Hove Albion FC","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[1.1799999999999999],"y":[0.90000000000000002],"text":"Team: Burnley FC <br> League Position: 15 <br> Expected Goals: 0.9 <br> Actual Goals: 1.18","type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(108,29,69,1)","opacity":1,"size":5.6692913385826778,"symbol":"circle","line":{"width":1.8897637795275593,"color":"rgba(108,29,69,1)"}},"hoveron":"points","name":"Burnley FC","legendgroup":"Burnley FC","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[0.89000000000000001],"y":[1.0700000000000001],"text":"Team: Cardiff City FC <br> League Position: 18 <br> Expected Goals: 1.07 <br> Actual Goals: 0.89","type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(30,99,177,1)","opacity":1,"size":5.6692913385826778,"symbol":"circle","line":{"width":1.8897637795275593,"color":"rgba(30,99,177,1)"}},"hoveron":"points","name":"Cardiff City FC","legendgroup":"Cardiff City FC","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[1.6599999999999999],"y":[1.71],"text":"Team: Chelsea FC <br> League Position: 3 <br> Expected Goals: 1.71 <br> Actual Goals: 1.66","type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(3,70,148,1)","opacity":1,"size":5.6692913385826778,"symbol":"circle","line":{"width":1.8897637795275593,"color":"rgba(3,70,148,1)"}},"hoveron":"points","name":"Chelsea FC","legendgroup":"Chelsea FC","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[1.3400000000000001],"y":[1.3600000000000001],"text":"Team: Crystal Palace FC <br> League Position: 12 <br> Expected Goals: 1.36 <br> Actual Goals: 1.34","type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(27,69,143,1)","opacity":1,"size":5.6692913385826778,"symbol":"circle","line":{"width":1.8897637795275593,"color":"rgba(27,69,143,1)"}},"hoveron":"points","name":"Crystal Palace FC","legendgroup":"Crystal Palace FC","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[1.4199999999999999],"y":[1.45],"text":"Team: Everton FC <br> League Position: 8 <br> Expected Goals: 1.45 <br> Actual Goals: 1.42","type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(0,51,153,1)","opacity":1,"size":5.6692913385826778,"symbol":"circle","line":{"width":1.8897637795275593,"color":"rgba(0,51,153,1)"}},"hoveron":"points","name":"Everton FC","legendgroup":"Everton FC","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[0.89000000000000001],"y":[1.1399999999999999],"text":"Team: Fulham FC <br> League Position: 19 <br> Expected Goals: 1.14 <br> Actual Goals: 0.89","type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(255,255,255,1)","opacity":1,"size":5.6692913385826778,"symbol":"circle","line":{"width":1.8897637795275593,"color":"rgba(255,255,255,1)"}},"hoveron":"points","name":"Fulham FC","legendgroup":"Fulham FC","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[0.57999999999999996],"y":[0.93999999999999995],"text":"Team: Huddersfield Town FC <br> League Position: 20 <br> Expected Goals: 0.94 <br> Actual Goals: 0.58","type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(14,99,173,1)","opacity":1,"size":5.6692913385826778,"symbol":"circle","line":{"width":1.8897637795275593,"color":"rgba(14,99,173,1)"}},"hoveron":"points","name":"Huddersfield Town FC","legendgroup":"Huddersfield Town FC","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[1.3400000000000001],"y":[1.5600000000000001],"text":"Team: Leicester City FC <br> League Position: 9 <br> Expected Goals: 1.56 <br> Actual Goals: 1.34","type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(0,83,160,1)","opacity":1,"size":5.6692913385826778,"symbol":"circle","line":{"width":1.8897637795275593,"color":"rgba(0,83,160,1)"}},"hoveron":"points","name":"Leicester City FC","legendgroup":"Leicester City FC","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[2.3399999999999999],"y":[1.8999999999999999],"text":"Team: Liverpool FC <br> League Position: 2 <br> Expected Goals: 1.9 <br> Actual Goals: 2.34","type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(200,16,46,1)","opacity":1,"size":5.6692913385826778,"symbol":"circle","line":{"width":1.8897637795275593,"color":"rgba(200,16,46,1)"}},"hoveron":"points","name":"Liverpool FC","legendgroup":"Liverpool FC","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[2.5],"y":[2.1800000000000002],"text":"Team: Manchester City FC <br> League Position: 1 <br> Expected Goals: 2.18 <br> Actual Goals: 2.5","type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(108,171,221,1)","opacity":1,"size":5.6692913385826778,"symbol":"circle","line":{"width":1.8897637795275593,"color":"rgba(108,171,221,1)"}},"hoveron":"points","name":"Manchester City FC","legendgroup":"Manchester City FC","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[1.71],"y":[1.6299999999999999],"text":"Team: Manchester United FC <br> League Position: 6 <br> Expected Goals: 1.63 <br> Actual Goals: 1.71","type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(218,41,28,1)","opacity":1,"size":5.6692913385826778,"symbol":"circle","line":{"width":1.8897637795275593,"color":"rgba(218,41,28,1)"}},"hoveron":"points","name":"Manchester United FC","legendgroup":"Manchester United FC","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[1.1100000000000001],"y":[1.1000000000000001],"text":"Team: Newcastle United FC <br> League Position: 13 <br> Expected Goals: 1.1 <br> Actual Goals: 1.11","type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(36,31,32,1)","opacity":1,"size":5.6692913385826778,"symbol":"circle","line":{"width":1.8897637795275593,"color":"rgba(36,31,32,1)"}},"hoveron":"points","name":"Newcastle United FC","legendgroup":"Newcastle United FC","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[1.1799999999999999],"y":[1.3500000000000001],"text":"Team: Southampton FC <br> League Position: 16 <br> Expected Goals: 1.35 <br> Actual Goals: 1.18","type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(215,25,32,1)","opacity":1,"size":5.6692913385826778,"symbol":"circle","line":{"width":1.8897637795275593,"color":"rgba(215,25,32,1)"}},"hoveron":"points","name":"Southampton FC","legendgroup":"Southampton FC","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[1.76],"y":[1.5800000000000001],"text":"Team: Tottenham Hotspur FC <br> League Position: 4 <br> Expected Goals: 1.58 <br> Actual Goals: 1.76","type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(19,34,87,1)","opacity":1,"size":5.6692913385826778,"symbol":"circle","line":{"width":1.8897637795275593,"color":"rgba(19,34,87,1)"}},"hoveron":"points","name":"Tottenham Hotspur FC","legendgroup":"Tottenham Hotspur FC","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[1.3700000000000001],"y":[1.1599999999999999],"text":"Team: Watford FC <br> League Position: 11 <br> Expected Goals: 1.16 <br> Actual Goals: 1.37","type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(251,238,35,1)","opacity":1,"size":5.6692913385826778,"symbol":"circle","line":{"width":1.8897637795275593,"color":"rgba(251,238,35,1)"}},"hoveron":"points","name":"Watford FC","legendgroup":"Watford FC","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[1.3700000000000001],"y":[1.3500000000000001],"text":"Team: West Ham United FC <br> League Position: 10 <br> Expected Goals: 1.35 <br> Actual Goals: 1.37","type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(122,38,58,1)","opacity":1,"size":5.6692913385826778,"symbol":"circle","line":{"width":1.8897637795275593,"color":"rgba(122,38,58,1)"}},"hoveron":"points","name":"West Ham United FC","legendgroup":"West Ham United FC","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[1.24],"y":[1.3600000000000001],"text":"Team: Wolverhampton Wanderers FC <br> League Position: 7 <br> Expected Goals: 1.36 <br> Actual Goals: 1.24","type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(253,185,19,1)","opacity":1,"size":5.6692913385826778,"symbol":"circle","line":{"width":1.8897637795275593,"color":"rgba(253,185,19,1)"}},"hoveron":"points","name":"Wolverhampton Wanderers FC","legendgroup":"Wolverhampton Wanderers FC","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[0.57999999999999996,0.60430379746835439,0.62860759493670881,0.65291139240506324,0.67721518987341767,0.70151898734177209,0.72582278481012652,0.75012658227848095,0.77443037974683537,0.7987341772151898,0.82303797468354423,0.84734177215189876,0.87164556962025319,0.89594936708860762,0.92025316455696204,0.94455696202531647,0.9688607594936709,0.99316455696202532,1.0174683544303798,1.0417721518987342,1.0660759493670886,1.090379746835443,1.1146835443037975,1.1389873417721519,1.1632911392405063,1.1875949367088607,1.2118987341772152,1.2362025316455696,1.260506329113924,1.2848101265822784,1.3091139240506329,1.3334177215189873,1.3577215189873417,1.3820253164556962,1.4063291139240506,1.430632911392405,1.4549367088607594,1.4792405063291139,1.5035443037974683,1.5278481012658227,1.5521518987341771,1.5764556962025316,1.600759493670886,1.6250632911392406,1.6493670886075948,1.6736708860759495,1.6979746835443037,1.7222784810126583,1.7465822784810126,1.7708860759493672,1.7951898734177214,1.8194936708860761,1.8437974683544303,1.8681012658227849,1.8924050632911391,1.9167088607594938,1.941012658227848,1.9653164556962026,1.9896202531645568,2.0139240506329115,2.0382278481012657,2.0625316455696203,2.0868354430379745,2.1111392405063292,2.1354430379746834,2.159746835443038,2.1840506329113922,2.2083544303797469,2.2326582278481011,2.2569620253164557,2.2812658227848099,2.3055696202531646,2.3298734177215188,2.3541772151898734,2.3784810126582276,2.4027848101265823,2.4270886075949365,2.4513924050632911,2.4756962025316454,2.5],"y":[0.85058475866392025,0.86583257858541129,0.88108039850690245,0.89632821842839361,0.91157603834988465,0.9268238582713757,0.94207167819286686,0.95731949811435801,0.97256731803584906,0.98781513795734022,1.0030629578788313,1.0183107778003224,1.0335585977218136,1.0488064176433047,1.0640542375647959,1.0793020574862868,1.094549877407778,1.1097976973292689,1.1250455172507601,1.1402933371722512,1.1555411570937424,1.1707889770152335,1.1860367969367247,1.2012846168582156,1.2165324367797068,1.2317802567011977,1.2470280766226889,1.26227589654418,1.2775237164656712,1.2927715363871624,1.3080193563086535,1.3232671762301444,1.3385149961516356,1.3537628160731265,1.3690106359946177,1.3842584559161089,1.3995062758376,1.4147540957590912,1.4300019156805823,1.4452497356020733,1.4604975555235644,1.4757453754450554,1.4909931953665465,1.5062410152880379,1.5214888352095288,1.53673665513102,1.5519844750525109,1.5672322949740023,1.5824801148954932,1.5977279348169844,1.6129757547384753,1.6282235746599667,1.6434713945814576,1.6587192145029488,1.6739670344244397,1.6892148543459311,1.704462674267422,1.7197104941889132,1.7349583141104041,1.7502061340318955,1.7654539539533864,1.7807017738748776,1.7959495937963685,1.8111974137178599,1.8264452336393509,1.841693053560842,1.8569408734823329,1.8721886934038243,1.8874365133253153,1.9026843332468064,1.9179321531682973,1.9331799730897887,1.9484277930112797,1.9636756129327708,1.9789234328542618,1.9941712527757531,2.0094190726972441,2.0246668926187352,2.0399147125402264,2.0551625324617175],"text":"","type":"scatter","mode":"lines","name":"fitted values","line":{"width":1.8897637795275593,"color":"rgba(0,100,0,1)","dash":"dash"},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null}],"layout":{"margin":{"t":40.840182648401829,"r":7.3059360730593621,"b":37.260273972602747,"l":43.105022831050235},"paper_bgcolor":"rgba(255,255,255,1)","font":{"color":"rgba(0,0,0,1)","family":"","size":14.611872146118724},"title":{"text":"Expected Goals vs Actual Goals Scored (per match)","font":{"color":"rgba(0,0,0,1)","family":"","size":17.534246575342465},"x":0,"xref":"paper"},"xaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[0.48399999999999999,2.5960000000000001],"tickmode":"array","ticktext":["0.5","1.0","1.5","2.0","2.5"],"tickvals":[0.5,1,1.5,2,2.5],"categoryorder":"array","categoryarray":["0.5","1.0","1.5","2.0","2.5"],"nticks":null,"ticks":"","tickcolor":null,"ticklen":3.6529680365296811,"tickwidth":0,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.68949771689498},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0,"zeroline":false,"anchor":"y","title":{"text":"Actual Goals Scored","font":{"color":"rgba(0,0,0,1)","family":"","size":14.611872146118724}},"hoverformat":".2f"},"yaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[0.78411399659711623,2.2464707620668043],"tickmode":"array","ticktext":["0.8","1.2","1.6","2.0"],"tickvals":[0.80000000000000004,1.2000000000000002,1.6000000000000001,2],"categoryorder":"array","categoryarray":["0.8","1.2","1.6","2.0"],"nticks":null,"ticks":"","tickcolor":null,"ticklen":3.6529680365296811,"tickwidth":0,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.68949771689498},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0,"zeroline":false,"anchor":"x","title":{"text":"Expected Goals Scored","font":{"color":"rgba(0,0,0,1)","family":"","size":14.611872146118724}},"hoverformat":".2f"},"shapes":[{"type":"rect","fillcolor":null,"line":{"color":null,"width":0,"linetype":[]},"yref":"paper","xref":"paper","layer":"below","x0":0,"x1":1,"y0":0,"y1":1}],"showlegend":false,"legend":{"bgcolor":null,"bordercolor":null,"borderwidth":0,"font":{"color":"rgba(0,0,0,1)","family":"","size":11.68949771689498},"title":{"text":"as.factor(team_name)","font":{"color":"rgba(0,0,0,1)","family":"","size":14.611872146118724}}},"hovermode":"closest","barmode":"relative","annotations":[{"x":0.050000000000000003,"y":0.94999999999999996,"xref":"paper","yref":"paper","text":"r = 0.898","showarrow":false,"font":{"size":14,"color":"darkgreen"}},{"x":0.050000000000000003,"y":0.94999999999999996,"xref":"paper","yref":"paper","text":"r = 0.898","showarrow":false,"font":{"size":14,"color":"darkgreen"}}]},"config":{"doubleClick":"reset","modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"source":"A","attrs":{"2b082f577433":{"x":{},"y":{},"colour":{},"text":{},"type":"scatter"},"2b082b08237d":{"x":{},"y":{},"colour":{},"text":{}}},"cur_data":"2b082f577433","visdat":{"2b082f577433":["function (y) ","x"],"2b082b08237d":["function (y) ","x"]},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
 </div>
 </div>
-<p>This scatter plot shows each premier league team and their respective average xG and actual goals scored per match in the 2018/19 season. The regression line illustrates the high correlation percieved between the two variables.</p>
+</div>
+<p>The similarity in gradient and intercept across regression lines highlights the consistency of correlation between xG and goals scored per season since the introduction of xG.</p>
+</section>
+</section>
+</section>
+<section id="summary" class="level2">
+<h2 class="anchored" data-anchor-id="summary">Summary</h2>
+<section id="key-findings" class="level3">
+<h3 class="anchored" data-anchor-id="key-findings">Key Findings</h3>
+<p>All the visualisations point to the same conclusion: expected goals (xG) is a strong predictor of actual goals scored. The overall correlation was high and stayed pretty consistent across seasons, which suggests xG is a reliable metric for understanding team performance. The only real exception was 2020/21, which stood out as an outlier—likely due to unusual circumstances that season (e.g., COVID disruptions).</p>
+<p>In short, xG seems to do what it claims: give a good sense of how many goals a team should score based on chances created. This makes it useful for analysts and fans alike.</p>
+</section>
+</section>
+<section id="limitations" class="level2">
+<h2 class="anchored" data-anchor-id="limitations">Limitations</h2>
+<ul>
+<li><p>I scraped the data myself, leading to potential transcription errors. Access to all the data would have been super beneficial</p></li>
+<li><p>My intention of longitudinal analysis here is limited since xG is still fairly novel. A larger sample would add power to both my research questions</p></li>
+<li><p>The 2020/21 season appeared as a slight outlier, potentially reflecting the unusual conditions of that season (COVID :/), perhaps exclude from analysis. I suppose it would have generally been harder to measure the variables used in xG throughout lock down etc.</p></li>
+</ul>
+<section id="future-work" class="level3">
+<h3 class="anchored" data-anchor-id="future-work">Future Work</h3>
+<p>If I had data available, in future work I would:</p>
+<ul>
+<li><p>Extend the analysis to other leagues</p></li>
+<li><p>Examine match-level rather than season-level data (player-level, even)</p></li>
+<li><p>Investigate how xG relates to points, wins, or league position.</p></li>
+</ul>
+</section>
 </section>
 
 </main>
