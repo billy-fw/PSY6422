@@ -1,5 +1,5 @@
 ---
-title: "Footystats data"
+title: "Testing the Strength of the Statistic Expected Goals in Football"
 author: "bfw"
 format: html
 editor: visual
@@ -11,7 +11,6 @@ Load relevant packages and upload data:
 #| results: "hide"
 #| warning: false
 #| message: false
-#| echo: false
 #load relevant packages
 library(here)
 library(tidyverse)
@@ -19,17 +18,19 @@ library(tidyverse)
 data_m<-read.csv(here("raw data", "my_premier_league_data.csv"))
 ```
 
-### Data Origins
+## Data Origins
 
-The data used for this project was collected from footystats.org between 01/12/25 and 05/12/25. Part of the data was downloaded directly from a sample of .csv files offered on the website. However, the rest of the data is behind a pay wall and therefore had to be scraped. The scraped data includes variables:
+The data used for this project was collected from [footystats.org](https://footystats.org/england/premier-league/xg#) between 01/12/25 and 05/12/25. Part of the [raw data](https://github.com/billy-fw/PSY6422/blob/main/raw%20data/england-premier-league-teams-2018-to-2019-stats.csv) can be downloaded directly from a sample of [.csv files](https://footystats.org/download-stats-csv) offered on the website. However, the csv files containing the rest of the data nesccasary for this project is behind a pay wall. Therefore the data used here was scraped from the website. I created the file "[my_premier_league_data.csv](https://github.com/billy-fw/PSY6422/blob/main/raw%20data/my_premier_league_data.csv)" on excel that contains the scraped data.
+
+The data includes variables:
 
 -   Season - the football year/season concerned, ranging from 2016/17 (the introduction of xG) to 2024/25,
 
--   Club - the name of each 20 teams that was in the premier league that season,
+-   Team_name - the name of each of the 20 clubs that was in the premier league that respective season,
 
--   Expected Goals (xG) - the avergage xG of each team per match across the season,
+-   Expected_goals - the average expected goals (xG) of each team per match across the season,
 
--   Actual Goals - the average actual goals scored of each team per match across the season.
+-   Actual_goals - the average actual goals scored of each team per match across the season.
 
 The scarped data was used to create a csv file in excel to produce my raw data set.
 
@@ -42,21 +43,44 @@ Here is an example of the data:
 head(data_m)
 ```
 
-### Research Questions
+## Project Motivations
 
-The overall aim of this project is to test the accuracy of the statistic xG, and whether this xG has become more accurate over time. To understand this, this project aims to test whether:
+There has been controversy surounding the statistic "expected goals (xG)" since it was introduced in premier league football match analysis in 2016/17. For instance, pundits and general audiences were uncertain about how the statistic is calculated, and what variables are taking into account. Furthermore, it challenges peoples feelings about the outcome of a match, perhaps viewed as objectifying a subjective experience by adding numbers to things that do not illustrate the full story.
 
-1.  There is a strong, significant relationship between xG and actual goals scored
-2.  The relationship between xG and actual goals scored becomes stronger over time
+## Research Questions
 
-### Data Preparation
+This project aims to evaluate the usefulness and reliability of the expected goals (xG) statistic in football analysis. Specifically, it seeks to answer the following questions:
 
-Given that I created this raw data using scraped data, there was not much data preparation needed.
+-   Is there a strong and statistically significant relationship between expected goals (xG) and actual goals scored?
 
-### Data Analysis
+-   Has the strength of the relationship between xG and actual goals changed over time since the introduction of xG in the Premier League?
 
-#### Overarching Trend
+## Data Preparation
 
+The raw dataset was created manually to be analysis-ready, therefore no major data wrangling (e.g. handling missing values or recoding variables) was required.
+
+However, several preparation and validation steps were undertaken:
+
+-   Sanity checks were performed to ensure expected goals and actual goals values were within plausible ranges for Premier League football.
+-   Summary statistics were computed to confirm consistency across seasons.
+-   The data were grouped by season to calculate Pearson correlation coefficients between expected goals and actual goals for each season.
+
+The raw data were then used directly to generate summary tables and visualisations.
+
+```{r}
+#| warning: false
+#| message: false
+cor_by_season <- data_m %>%
+  group_by(Season) %>%
+  summarise(r = round(cor(Expected_goals, Actual_goals, method = "pearson"), 3))
+head(cor_by_season)
+```
+## Visualizations
+
+The following visualisations were created to explore the relationship between expected goals
+and actual goals, both overall and across individual seasons.
+
+### Overarching Trend
 First, I wanted to check whether there was an overall correlation between variables expected goals and actual goals.
 
 ```{r}
@@ -74,6 +98,7 @@ Pearson's correlation coefficient (r) indicates a strong relationship between xG
 
 We can visualize this relationship via a scatter plot:
 
+#### Scatter Plot
 ```{r}
 #| warning: false
 #| message: false
@@ -105,8 +130,7 @@ plot_1
 
 This visualization highlights a strong relationship between xG and actual goals scored, therefore answering the first research question.
 
-#### Trends per Season
-
+### Per Season Trends
 Next I wanted to check whether the strength of this relationship has changed since the introduction of xG.
 
 Here is a correlation matrix of xG and actual goals, per season:
@@ -132,10 +156,12 @@ cor_by_season_col %>%
 
 This table shows that only season 2020/21 falls below the mean (0.742\<0.825) as is highlighted in red. Whereas each other season remained above the mean and is somewhat consistent in value. This is reinforced through the accompanying line chart, highlighting the consistency in values. Other than season 2020/21, which acts as an outlier:
 
+#### Line Chart (left) and Box Plot (right)
 ```{r}
 #| warning: false
 #| message: false
 #| results: false
+#| echo: false
 cor_by_season_out <- cor_by_season %>%
   mutate(is_outlier_season = ifelse(Season == "2020/21", TRUE, FALSE))
 line_plot <- ggplot(cor_by_season_out, aes(x = Season, y = r, group = 1)) +
@@ -162,11 +188,59 @@ box_plot <- ggplot(cor_by_season_out, aes(y = r)) +
   theme_minimal() +
   expand_limits(y = 0.5)
 ```
-
 ```{r}
+
+
+
 #| warning: false
 #| message: false
+#| echo: false
 library(patchwork)
 # Combine side by side
 line_plot + box_plot + plot_layout(ncol = 2, widths = c(2, 1))
 ```
+
+#### Multiple Regression
+
+Finally, I ran a multiple regression chart to further illustrate the consistency of xG since its introduction.
+
+```{r}
+#| warning: false
+#| message: false
+#| echo: false
+
+ggplot(data_m, aes(x = Expected_goals, y = Actual_goals, colour = factor(Season))) +
+  geom_point(alpha = 0.2,
+             size = 0.5) +
+  geom_smooth(method = "lm", se = FALSE) +
+  labs(
+    title = "Relationship Between Actual Goals and Expected Goals per Season",
+    colour = "Season",
+    x = "xG",
+    y = "Actual Goals Scored"
+  ) +
+  theme_minimal()
+```
+
+The similarity in gradient and intercept across regression lines highlights the consistency of correlation between xG and goals scored per season since the introduction of xG.
+
+## Summary
+
+### Key Findings
+Each of these visualizations illustrate the same conclusion: that expected goals is indeed a strong predictor of actual goals scored. This relationship was made clear by running a simple correlation matrix highlighting a strong overall relationship, which is mostly stable throughout each season. Season can serve 2020/21 as an outlier to this relationship, as demonstrated using a box plot and accompanying line chart.
+
+This project demonstrates that expected goals (xG) is a strong and consistent predictor of actual goals scored in the Premier League. The overall correlation between xG and goals was high, and this relationship remained stable across most seasons since the introduction of xG.
+
+## Limitations
+A potential limitation here is that I scraped the data myself, leading to potential error.
+
+### Future Work
+The 2020/21 season appeared as a slight outlier, potentially reflecting the unusual conditions of that season.
+
+If I had data available, in future work I would:
+
+-   Extend the analysis to other leagues
+
+-   Examine match-level rather than season-level data
+
+-    Investigate how xG relates to points, wins, or league position

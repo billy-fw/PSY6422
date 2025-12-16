@@ -7,5 +7,5 @@ and actual goals scored in the Premier League.
 
 ## How to reproduce
 1. Open the `.qmd` file in RStudio
-2. Install required packages listed in the script
+2. Install required packages: "tidyverse", "here", "kableExtra", "patchwork"
 3. Render to HTML
