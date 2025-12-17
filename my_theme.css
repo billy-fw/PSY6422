@@ -1,0 +1,80 @@
+/* ================================
+   Cream background + green accents
+   ================================ */
+
+/* Page background and default text */
+body {
+    background-color: #fff8e7;  /* light cream */
+    color: #222222;             /* dark text for readability */
+    font-family: 'Arial', sans-serif;
+    line-height: 1.6;
+    margin: 20px;
+}
+
+/* Headings (H1, H2, H3) */
+h1, h2, h3 {
+    color: #006400;             /* dark green like a football pitch */
+    font-weight: bold;
+}
+
+/* Links */
+a {
+    color: #228B22;             /* medium green */
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* Code blocks */
+pre, code {
+    background-color: #f4f4f4;
+    color: #111111;
+    padding: 2px 4px;
+    border-radius: 4px;
+    font-family: 'Courier New', monospace;
+}
+
+/* Tables */
+table {
+    border-collapse: collapse;
+    width: 100%;
+    margin-bottom: 20px;
+    background-color: #fefcf5;   /* slightly lighter cream */
+    color: #222222;
+}
+
+th, td {
+    border: 1px solid #ccc;
+    padding: 8px 12px;
+    text-align: center;
+}
+
+th {
+    background-color: #c6e2b3;   /* soft green header */
+    color: #006400;
+}
+
+tr:nth-child(even) {
+    background-color: #f9f9f9;   /* alternate row shading */
+}
+
+/* Plot captions */
+figcaption {
+    font-style: italic;
+    text-align: center;
+    margin-top: 5px;
+}
+
+/* Lists */
+ul, ol {
+    margin-left: 20px;
+}
+
+/* Horizontal rules */
+hr {
+    border: none;
+    border-top: 2px solid #006400;
+    margin: 30px 0;
+}

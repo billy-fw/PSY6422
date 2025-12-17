@@ -7,6 +7,21 @@ format:
     css: my_theme.css
     toc: true
 ---
+Install relevant packages:
+```{r}
+#| warning: false
+#| message: false
+#| results: false
+#| eval: false
+# Install required packages (run once locally)
+install.packages(c(
+  "tidyverse",
+  "here",
+  "kableExtra",
+  "patchwork"
+))
+```
+
 
 Load relevant packages and upload data:
 
@@ -17,8 +32,10 @@ Load relevant packages and upload data:
 #load relevant packages
 library(here)
 library(tidyverse)
+library(kableExtra)
+library(patchwork)
 #upload raw data
-data_m<-read.csv(here("raw data", "my_premier_league_data.csv"))
+df<-read.csv(here("raw data", "my_premier_league_data.csv"))
 ```
 
 ## Project Motivations
@@ -45,7 +62,7 @@ Here is an example of the data:
 #| warning: false
 #| message: false
 #| echo: false 
-head(data_m)
+head(df)
 ```
 
 ## Research Questions
@@ -71,7 +88,7 @@ The raw data were then used directly to generate summary tables and visualisatio
 ```{r}
 #| warning: false
 #| message: false
-cor_by_season <- data_m %>%
+cor_by_season <- df %>%
   group_by(Season) %>%
   summarise(r = round(cor(Expected_goals, Actual_goals, method = "pearson"), 3))
 head(cor_by_season)
@@ -89,7 +106,7 @@ First, I wanted to check whether there was an overall correlation between variab
 #| warning: false
 #| message: false
 #test correlation
-ovr_cor<-cor(data_m$Expected_goals, data_m$Actual_goals)
+ovr_cor<-cor(df$Expected_goals, df$Actual_goals)
 #round to 3 d.p
 ovr_cor_rounded<-round(ovr_cor, 3)
 #print result
@@ -106,29 +123,29 @@ We can visualize this relationship via a scatter plot:
 #| warning: false
 #| message: false
 # Create scatter plot of xG and actual goals across all seasons
-plot_1<-ggplot(data = data_m, 
+scatter_plot<-ggplot(data = df, 
                aes(x = Expected_goals,
                    y = Actual_goals)) +
-  geom_point(size = 0.9, #add scatter function
+  geom_point(size = 0.9, ## Add scatter function
              color = "skyblue",
              alpha = 0.7) +
-  geom_smooth(method = "lm", #add regression line
+  geom_smooth(method = "lm", ## Add regression line
               se = FALSE,
               color = "red") +
-  labs(title = "Overall Relationship Between Expected Goals (xG) and Actual Goals Scored ", #add labels
+  labs(title = "Overall Relationship Between Expected Goals (xG) and Actual Goals Scored ", ## Add labels
        x = "Expected Goals (xG)",
        y = "Actual Goals"
   ) +
-    annotate( #add correlation coefficent
+  annotate( ## Add correlation coefficient
     "text",
-    x = max(data_m$Expected_goals) * 0.9, #place text 90% of the length along the x-axis
-    y = max(data_m$Actual_goals) * 0.7, #70% across the y axis
+    x = max(df$Expected_goals) * 0.9, ## Place text 90% of the length along the x-axis
+    y = max(df$Actual_goals) * 0.7,  ## 70% across the y axis
     label = paste("r =", ovr_cor_rounded),
     size = 4,
     color = "red"
   ) +
-  theme_minimal()
-plot_1 
+  theme_minimal() ## Set simple theme
+scatter_plot ##View plot
 ```
 
 This visualization highlights a strong relationship between xG and actual goals scored, therefore answering the first research question.
@@ -142,23 +159,42 @@ Here is a correlation matrix of xG and actual goals, per season:
 ```{r}
 #| warning: false
 #| message: false
-library(kableExtra)
-#check correlations per season and compare to mean
-cor_by_season <- data_m %>%
-  group_by(Season) %>%
-  summarise(r = round(cor(Expected_goals, Actual_goals, method = "pearson"), 3))
-cor_by_season_col <- data_m %>% #add color to specific values
-  group_by(Season) %>%
-  summarise(r = round(cor(Expected_goals, Actual_goals, method = "pearson"), 3)) %>%
-  mutate(r = cell_spec(
+# Check correlations per season and compare to mean
+## Added again for clarity of code
+cor_by_season <- df %>%
+  group_by(Season) %>% ## Group data by season
+  summarise(
+    r = round(
+      cor(Expected_goals, Actual_goals,
+          method = "pearson"),
+      3
+      )
+    )
+cor_by_season_col <- df %>% ## Add color to specific values/conditional formatting
+  group_by(Season) %>% ## Group by season
+  summarise(
+    r = round(
+      cor(Expected_goals, Actual_goals,
+          method = "pearson"),
+      3
+      )
+    ) %>%
+  mutate( ## Red < mean, green> mean
+    r = cell_spec(
     r,
     color = ifelse(r < ovr_cor, "red", "green")
-  ))
+   )
+  )
+## Display results
 cor_by_season_col %>%
-  kable(escape = FALSE, align = "c", caption = "Correlation by Season")
+  kable(
+    escape = FALSE, ## Allows html formatting
+    align = "c", ## Centre align 
+    caption = "Correlation by Season"
+    )
 ```
 
-This table shows that only season 2020/21 falls below the mean (0.742\<0.825) as is highlighted in red. Whereas each other season remained above the mean and is somewhat consistent in value. This is reinforced through the accompanying line chart, highlighting the consistency in values. Other than season 2020/21, which acts as an outlier:
+This table shows that only season 2020/21 falls below the mean (0.742\<0.825) as is highlighted in red. Whereas each other season remained above the mean and is somewhat consistent in value. This is reinforced through the accompanying line chart and box plot, highlighting the consistency in values; other than season 2020/21, which acts as an outlier:
 
 #### Line Chart (left) and Box Plot (right)
 
@@ -167,42 +203,44 @@ This table shows that only season 2020/21 falls below the mean (0.742\<0.825) as
 #| message: false
 #| results: false
 #| echo: false
+# Identify potential outlier and visualize correlation trends across seasons
 cor_by_season_out <- cor_by_season %>%
-  mutate(is_outlier_season = ifelse(Season == "2020/21", TRUE, FALSE))
+  mutate(
+    is_outlier_season = ifelse(Season == "2020/21", TRUE, FALSE) ## Flag 2020/21 season as potential outlier
+    )
+## Line plot showing correlation trend across seasons
 line_plot <- ggplot(cor_by_season_out, aes(x = Season, y = r, group = 1)) +
-  geom_line(color = "green", size = 1) +
-  geom_point(aes(color = is_outlier_season), size = 3) +
-  scale_color_manual(values = c("FALSE" = "green", "TRUE" = "red")) +
-  labs(
+  geom_line(color = "green", size = 1) + # Connect values
+  geom_point(aes(color = is_outlier_season), size = 3) +   ## Plot points for each season, different color for outlier
+  scale_color_manual(values = c("FALSE" = "green", "TRUE" = "red")) + ## Assign colors
+  labs( ## Add labels and legend
     title = "Strength of xG vs Actual Goals Correlation Over Seasons",
     x = "Season",
     y = "Pearson Correlation",
     color = "Outlier"
   ) +
-  theme_minimal() +
-  expand_limits(y = 0.5)
+  theme_minimal() + ## Set theme
+  expand_limits(y = 0.5) ## Set the y-axis to start at 0.5 for more meaningful visualisation
 
-# Boxplot
+# Boxplot showing distribution of correlations across seasons
 box_plot <- ggplot(cor_by_season_out, aes(y = r)) +
-  geom_boxplot(fill = "green", outlier.color = "red", outlier.size = 3) +
-  geom_point(data = filter(cor_by_season_out, is_outlier_season), 
+  geom_boxplot(fill = "green",
+               outlier.color = "red",
+               outlier.size = 3) +
+  geom_point(data = filter(cor_by_season_out, is_outlier_season), ## Add visual emphasis to outlier
              aes(x = 1, y = r), color = "red", size = 3) +
   labs(
-    title = "Boxplot",
+    title = "Boxplot", ## Add title
   ) +
-  theme_minimal() +
-  expand_limits(y = 0.5)
+  theme_minimal() + ## Keep consistent theme
+  expand_limits(y = 0.5) ## Match Y-axis to compare across plots
 ```
 
 ```{r}
-
-
-
 #| warning: false
 #| message: false
 #| echo: false
-library(patchwork)
-# Combine side by side
+# Combine plots side by side and display
 line_plot + box_plot + plot_layout(ncol = 2, widths = c(2, 1))
 ```
 
@@ -214,18 +252,27 @@ Finally, I ran a multiple regression chart to further illustrate the consistency
 #| warning: false
 #| message: false
 #| echo: false
-
-ggplot(data_m, aes(x = Expected_goals, y = Actual_goals, colour = factor(Season))) +
-  geom_point(alpha = 0.2,
+# Multiple regression visualization by season
+mr_plot<-ggplot(
+  df,
+  aes(
+    x = Expected_goals,
+    y = Actual_goals,
+    colour = factor(Season)  ## Add separate regression lines for each season
+    )
+  ) +
+  geom_point(alpha = 0.2, # Plot individual match observations and reduce size and transparacy 
              size = 0.5) +
-  geom_smooth(method = "lm", se = FALSE) +
-  labs(
+  geom_smooth(method = "lm", se = FALSE) + ## Add each line and remove CI
+  labs( ## Add labs
     title = "Relationship Between Actual Goals and Expected Goals per Season",
     colour = "Season",
     x = "xG",
     y = "Actual Goals Scored"
   ) +
-  theme_minimal()
+  theme_minimal() ## Keep theme
+# Display plot
+mr_plot
 ```
 
 The similarity in gradient and intercept across regression lines highlights the consistency of correlation between xG and goals scored per season since the introduction of xG.
@@ -255,3 +302,15 @@ If I had data available, in future work I would:
 -   Examine match-level rather than season-level data (player-level, even)
 
 -   Investigate how xG relates to points, wins, or league position.
+```{r}
+#| warning: false
+#| message: false
+#| results: false
+#| eval: false
+# Save plots
+ggsave("plots/scatter_plot.pdf", plot = scatter_plot)
+ggsave("plots/line_plot.pdf", plot = line_plot)
+ggsave("plots/box_plot.pdf", plot = box_plot)
+ggsave("plots/mr_plot.pdf", plot = mr_plot)
+```
+

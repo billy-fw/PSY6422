@@ -9,3 +9,14 @@ and actual goals scored in the Premier League.
 1. Open the `.qmd` file in RStudio
 2. Install required packages: "tidyverse", "here", "kableExtra", "patchwork"
 3. Render to HTML
+
+## Code Book
+Variables used in this study include: 
+1. Season - the football year/season concerned, ranging from 2016/17 (the introduction of xG) to 2024/25,
+
+2. Team_name - the name of each of the 20 clubs that was in the premier league that respective season
+
+3. Expected_goals - the average expected goals (xG) of each team per match across the season,
+
+4. Actual_goals - the average actual goals scored of each team per match across the season.
+
