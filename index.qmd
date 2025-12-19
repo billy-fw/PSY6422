@@ -26,7 +26,7 @@ install.packages(c(
 Load relevant packages and upload data:
 
 ```{r}
-#| results: "hide"
+#| results: false
 #| warning: false
 #| message: false
 #load relevant packages

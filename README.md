@@ -7,6 +7,7 @@ and actual goals scored in the Premier League.
 
 ## How to reproduce
 1. Open the `.qmd` file in RStudio
+2. Download raw data file - "my_premier_league_data.csv"
 2. Install required packages: "tidyverse", "here", "kableExtra", "patchwork"
 3. Render to HTML
 
