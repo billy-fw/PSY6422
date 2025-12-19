@@ -6,6 +6,7 @@ format:
     theme: litera
     css: my_theme.css
     toc: true
+    self-contained: true
 ---
 Install relevant packages:
 ```{r}
@@ -300,15 +301,3 @@ If I had data available, in future work I would:
 -   Examine match-level rather than season-level data (player-level, even)
 
 -   Investigate how xG relates to points, wins, or league position.
-```{r}
-#| warning: false
-#| message: false
-#| results: false
-#| eval: false
-# Save plots
-ggsave("plots/scatter_plot.pdf", plot = scatter_plot)
-ggsave("plots/line_plot.pdf", plot = line_plot)
-ggsave("plots/box_plot.pdf", plot = box_plot)
-ggsave("plots/mr_plot.pdf", plot = mr_plot)
-```
-
